@@ -23,6 +23,7 @@
     export let status = "available";
 
     export let disabled = false;
+    export let add = false;
     export let button = "Create";
 
     export let success = false;
@@ -76,9 +77,15 @@
                     on:change={changeRoom}
                 >
                     {#each rooms as room}
-                        <option value={room.name}
-                            >{SnakeCaseToCapitalized(room.name)}</option
-                        >
+                        {#if !isNoRoomNumber(room.name) && add}
+                            <option value={room.name}
+                                >{SnakeCaseToCapitalized(room.name)}</option
+                            >
+                        {:else if !add}
+                            <option value={room.name}
+                                >{SnakeCaseToCapitalized(room.name)}</option
+                            >
+                        {/if}
                     {/each}
                 </Input>
             </FormGroup>

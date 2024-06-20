@@ -62,6 +62,7 @@
         bind:success
         bind:failure
         bind:error
+        add={data.disabled === undefined}
         {button}
         {submit}
         {disabled}

@@ -75,7 +75,7 @@ export async function getRooms() {
  */
 export async function getRoomsByType(type) {
     let db = await getDB();
-    let query = `SELECT room_id, room_number FROM room WHERE type = ?`;
+    let query = `SELECT room_id, room_number FROM room WHERE type = ? AND status != "maintenance"`;
     let result = await db.select(query, [type]);
     return result.map((room) => new Room(room));
 }
