@@ -2,7 +2,7 @@
 CREATE TABLE
     IF NOT EXISTS booking (
         booking_id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
-        room_id INT UNSIGNED NULL,
+        room_id INT UNSIGNED NOT NULL,
         user_id INT UNSIGNED NOT NULL,
         start_datetime DATETIME NOT NULL,
         end_datetime DATETIME NOT NULL,
