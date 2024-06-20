@@ -35,6 +35,7 @@
                     "Room is not available for the selected time period",
                 );
             }
+            if(roomId === undefined) throw new Error("Please select a room");
             let booking = new Booking({
                 room_id: roomId,
                 user_id: $user.id,
