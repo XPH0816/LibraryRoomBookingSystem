@@ -81,6 +81,17 @@
                     <Input type="text" bind:value={data.user_id} disabled />
                 </FormGroup>
             </Col>
+            {#if data.username}
+                <Col>
+                    <FormGroup floating label="Username">
+                        <Input
+                            type="text"
+                            bind:value={data.username}
+                            disabled
+                        />
+                    </FormGroup>
+                </Col>
+            {/if}
             <Col>
                 <FormGroup floating label="Date">
                     <Input type="date" bind:value={data.date} disabled />
@@ -105,7 +116,7 @@
         />
     </FormGroup>
     {#if data.admin_id}
-        <FormGroup floating label="Admin ID">
+        <FormGroup floating label="Reply By">
             <Input type="text" bind:value={data.admin_id} disabled />
         </FormGroup>
     {/if}

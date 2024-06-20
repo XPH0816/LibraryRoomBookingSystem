@@ -5,6 +5,7 @@ export class userManageRepo {
     constructor(users = []) {
         this.datas = users.map(user => {
             return {
+                user_id: user.user_id,
                 username: user.username,
                 email: user.email,
                 phone: user.phone,

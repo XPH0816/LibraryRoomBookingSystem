@@ -45,6 +45,17 @@ jobs:
           node-version: 20
           cache: 'pnpm' # Set this to npm, yarn or pnpm.
 
+      - name: setup key (windows only)
+        if: matrix.settings.platform == 'windows-latest'
+        run: |
+          ./setup-key.bat
+
+      - name: setup key (macos and linux only)
+        if: matrix.settings.platform != 'windows-latest'
+        run: |
+          chmod +x ./setup-key.sh
+          ./setup-key.sh
+
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:

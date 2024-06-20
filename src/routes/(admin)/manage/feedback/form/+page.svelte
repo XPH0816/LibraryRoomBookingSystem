@@ -24,13 +24,15 @@
         else
             reply = data.disabled
                 ? {
-                      user_id: data.user.username,
+                      user_id: data.user.user_id,
+                      username: data.user.username,
                       date: formatDate(new Date()),
                       status: data.feedback.status,
                   }
                 : {
-                      user_id: data.user.username,
-                      admin_id: $user.id,
+                      user_id: data.user.user_id,
+                      username: data.user.username,
+                      admin_id: $user.username,
                       date: formatDate(new Date()),
                       status: data.feedback.status,
                   };

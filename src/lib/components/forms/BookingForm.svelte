@@ -73,7 +73,7 @@
         let endDateTime = new Date(dateTime);
         endDateTime = GetEndDateTime(endDateTime, room.duration);
         checkOutTime = formatTime(endDateTime);
-        changeDate();
+        if (checkInDate !== checkOutDate && isNotHikmahRoomAndEksplorasiRoom(roomName)) changeDate();
     };
 
     let changeEndTime = () => {

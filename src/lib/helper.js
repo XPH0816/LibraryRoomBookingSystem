@@ -6,6 +6,7 @@ import { getRoomType } from "./store";
  * @returns 
  */
 export function SnakeCaseToCapitalized(str) {
+    if (typeof str !== "string") return "";
     return str.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
@@ -153,7 +154,7 @@ export function isNotHikmahRoomAndEksplorasiRoom(roomName) {
  * @param {String} roomName
  * @returns boolean
  */
-export function isFreeRoom(roomName){
+export function isFreeRoom(roomName) {
     let regex = /[a-z]*[_](room|stage|lounge)|[A-Z][a-z]* (Room|Stage|Lounge)|[aA]uditorium/g;
     if (regex.test(roomName)) {
         regex.lastIndex = 0;
@@ -168,7 +169,7 @@ export function isFreeRoom(roomName){
  * @param {String} roomName
  * @returns boolean
  */
-export function isNoRoomNumber(roomName){
+export function isNoRoomNumber(roomName) {
     let regex = /[a-z]*[_](stage|lounge)|[A-Z][a-z]* (Stage|Lounge)|[aA]uditorium/g;
     if (regex.test(roomName)) {
         regex.lastIndex = 0;

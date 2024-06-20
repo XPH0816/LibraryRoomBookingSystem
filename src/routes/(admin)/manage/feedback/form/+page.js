@@ -20,7 +20,7 @@ export async function load({ url }) {
         user = await getUserById(feedback.user_id, 'user');
         if (feedback.admin_id) {
             admin = await getUserById(feedback.admin_id, 'admin');
-            reply = { user_id: user.username, admin_id: admin.username, feedback_id: feedback.id, comment: feedback.comment, date: feedback.date, status: feedback.status };
+            reply = { user_id: user.user_id, username:user.username, admin_id: admin.username, feedback_id: feedback.id, comment: feedback.comment, date: feedback.date, status: feedback.status };
         }
         data = reply ? { feedback, reply, disabled: true } : { feedback, user, disabled: true };
     } else if (url.searchParams.get('edit')) {
@@ -31,7 +31,7 @@ export async function load({ url }) {
         user = await getUserById(feedback.user_id, 'user');
         if (feedback.admin_id) {
             admin = await getUserById(feedback.admin_id, 'admin');
-            reply = { user_id: user.username, admin_id: admin.username, comment: feedback.comment, date: feedback.date };
+            reply = { user_id: user.user_id, username:user.username, admin_id: admin.username, comment: feedback.comment, date: feedback.date };
         }
         data = reply ? { feedback, reply, disabled: false } : { feedback, user, disabled: false };
     }

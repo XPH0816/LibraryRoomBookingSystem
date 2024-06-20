@@ -23,7 +23,7 @@ export class FeedBackRepo {
                     edit: "/feedback/form?id=" + feedback.id + "&edit=true",
                 };
                 data = {
-                    id: feedback.id,
+                    feedback_id: feedback.id,
                     date: feedback.date,
                     content: feedback.content,
                     status: feedback.status,
@@ -37,7 +37,7 @@ export class FeedBackRepo {
                     reply: "/manage/feedback/form?id=" + feedback.id + "&edit=true",
                 }
                 data = {
-                    id: feedback.id,
+                    feedback_id: feedback.id,
                     user_id: feedback.user_id,
                     date: feedback.date,
                     content: feedback.content,
