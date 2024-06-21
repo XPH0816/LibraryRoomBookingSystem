@@ -39,9 +39,13 @@
 
     onMount(async () => {
         roomsAvailable = await getRoomsByType(roomName);
-        roomId
-            ? (roomName = (await getRoomById(roomId)).type)
-            : (roomId = roomsAvailable[0].room_id);
+        let room;
+        if (roomId != null) {
+            room = await getRoomById(roomId);
+            roomName = room.type;
+        } else {
+            roomId = roomsAvailable[0].room_id;
+        }
         price = getPrice(rooms.find((value) => value.name === roomName).price);
         changeDate();
     });
@@ -73,7 +77,11 @@
         let endDateTime = new Date(dateTime);
         endDateTime = GetEndDateTime(endDateTime, room.duration);
         checkOutTime = formatTime(endDateTime);
-        if (checkInDate !== checkOutDate && isNotHikmahRoomAndEksplorasiRoom(roomName)) changeDate();
+        if (
+            checkInDate !== checkOutDate &&
+            isNotHikmahRoomAndEksplorasiRoom(roomName)
+        )
+            changeDate();
     };
 
     let changeEndTime = () => {
@@ -131,11 +139,15 @@
                         )}
                         bind:value={roomId}
                     >
-                        {#each roomsAvailable as room}
-                            <option value={room.room_id}
-                                >{room.room_number}</option
-                            >
-                        {/each}
+                        <!-- {#await getRoomsByType(roomName) then roomsAvailable} -->
+                            {#each roomsAvailable as room}
+                                <option
+                                    value={room.room_id}
+                                    selected={roomId === room.room_id}
+                                    >{room.room_number}</option
+                                >
+                            {/each}
+                        <!-- {/await} -->
                     </Input>
                 </FormGroup>
             </Col>

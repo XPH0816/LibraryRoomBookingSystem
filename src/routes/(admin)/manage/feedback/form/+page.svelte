@@ -13,6 +13,8 @@
     let submit;
     let success = false;
     let failure = false;
+    let msg;
+
     let view = false;
     let reply;
     let close;
@@ -39,7 +41,7 @@
         submit = async () => {
             success = failure = false;
             try {
-                if (reply.comment === "") throw new Error("Reply is Required"); 
+                if (!reply.comment) throw new Error("Please enter your reply");
                 data.feedback.content = content;
                 data.feedback.admin_id = $user.id;
                 data.feedback.comment = reply.comment;
@@ -50,6 +52,8 @@
                 } else throw new Error("Failed to Submit Feedback");
             } catch (e) {
                 failure = true;
+                if(e.message) msg = e.message;
+                else msg = "Failed to Submit Feedback";
             }
         };
     });
@@ -61,6 +65,7 @@
             bind:content
             bind:success
             bind:failure
+            bind:msg
             feedback={data.feedback}
             bind:data={reply}
             button="Reply"

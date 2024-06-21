@@ -9,14 +9,13 @@
     import { Booking, checkAvailability } from "$lib/models/booking";
     import showModal from "$lib/showModal.js";
     import { currentDateTime, user } from "$lib/store";
-    import { onMount } from "svelte";
 
     export let data;
 
     let roomId = data.room.room_id;
-    let checkInDate;
+    let checkInDate = formatDate(data.dateTime);
     let checkOutDate;
-    let checkInTime;
+    let checkInTime = formatTime(data.dateTime);
     let checkOutTime;
     let reason;
     let success = false;
@@ -43,6 +42,8 @@
                     "Room is not available for the selected time period",
                 );
             }
+            if (roomId === undefined) throw new Error("Please select a room");
+            if (!reason) throw new Error("Please enter a reason");
             let booking = new Booking({
                 room_id: roomId,
                 user_id: $user.id,
@@ -57,11 +58,6 @@
             else showModal("Error", "Failed to book room");
         }
     };
-
-    onMount(() => {
-        checkInDate = formatDate(data.dateTime);
-        checkInTime = formatTime(data.dateTime);
-    });
 </script>
 
 <main class="container-fluid">
