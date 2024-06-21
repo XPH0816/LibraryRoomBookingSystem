@@ -16,7 +16,7 @@ export class FeedBackRepo {
             let data = {};
             let action = {};
             if (usertype == "user") {
-                action = feedback.status == "closed" ? {
+                action = feedback.status != "open" ? {
                     view: "/feedback/form?id=" + feedback.id,
                 } : {
                     view: "/feedback/form?id=" + feedback.id,

@@ -34,7 +34,7 @@
     export let checkOutDate;
     export let checkInTime = formatTime($currentDateTime);
     export let checkOutTime;
-    export let reason = "Delete this text and type your reason here";
+    export let reason = "";
     export let success = false;
 
     onMount(async () => {

@@ -38,10 +38,11 @@
                   };
         submit = async () => {
             success = failure = false;
-            data.feedback.content = content;
-            data.feedback.admin_id = $user.id;
-            data.feedback.comment = reply.comment;
             try {
+                if (reply.comment === "") throw new Error("Reply is Required"); 
+                data.feedback.content = content;
+                data.feedback.admin_id = $user.id;
+                data.feedback.comment = reply.comment;
                 if (await data.feedback.update()) {
                     success = true;
                     await closeFeedback(data.feedback.id);

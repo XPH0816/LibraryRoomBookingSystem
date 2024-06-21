@@ -17,7 +17,7 @@
 
     export let feedback = {};
 
-    export let content = "Enter your content here";
+    export let content = "";
     export let button = "Save";
 
     export let success = false;
@@ -33,13 +33,16 @@
     export let submit = async () => {
         success = failure = false;
         try {
+            if (!content) throw new Error("Content is Required");
             let feedback = new FeedBack({
                 content,
                 user_id: $user.id,
                 date: formatDate($currentDateTime),
             });
-            if (await feedback.save()) success = true;
-            else throw new Error("Failed to Submit Feedback");
+            if (await feedback.save()) {
+                success = true;
+                goto("/feedback");
+            } else throw new Error("Failed to Submit Feedback");
         } catch (e) {
             failure = true;
             msg = "Failed to Submit Feedback";
