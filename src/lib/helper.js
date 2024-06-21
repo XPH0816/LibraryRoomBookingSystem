@@ -38,7 +38,7 @@ export function formatTime(time) {
  * @description Format date to YYYY-MM-DD
  */
 export function formatDate(date) {
-    return date.toLocaleDateString().split("/").reverse().join("-");
+    return date.toLocaleDateString("en-MY").split("/").reverse().join("-");
 }
 
 /**
