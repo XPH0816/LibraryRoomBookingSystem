@@ -1,6 +1,6 @@
-import { formatDate, formatTime, toDateTime } from "$lib/helper";
-import { cancelBooking, getBookingsByUserId } from "$lib/models/booking";
-import { getRoomNameByIds } from "$lib/models/room";
+import { getDB } from "$lib/db";
+import { formatDate, formatTime } from "$lib/helper";
+import { cancelBooking } from "$lib/models/booking";
 
 /**
  * HistoryRepo class
@@ -10,41 +10,29 @@ import { getRoomNameByIds } from "$lib/models/room";
  * @param {Array<import("$lib/models/room").Room>} rooms - Array of rooms
  */
 export class HistoryRepo {
-    constructor(bookings = [], rooms = []) {
-        this.datas = bookings.map((booking) => {
-            let startDateTime = new Date(booking.startDateTime);
-            let endDateTime = new Date(booking.endDateTime);
-            let room = rooms.find((room) => room.room_id == booking.room_id);
-            let action = {};
-            if (booking.status === "approved") {
-                if (room.price > 0) {
-                    action = {
-                        pay: "/payment?id=" + booking.booking_id
-                    };
-                } else {
-                    action = {
-                        show: () => { () => { } }
-                    }
-                }
-            }
-            else if (booking.status === "pending") action = { cancel: cancelBooking(booking.booking_id) };
-            else action = { show: () => { () => { } } };
-            return {
-                booking_id: booking.booking_id,
-                room: room.roomName,
-                start_date: formatDate(startDateTime),
-                end_date: formatDate(endDateTime),
-                start_time: formatTime(startDateTime),
-                end_time: formatTime(endDateTime),
-                reason: booking.reason,
-                status: booking.status,
-                action
-            }
-        });
+    constructor({ booking_id, room_number, type, start_datetime, end_datetime, status, reason }) {
+        start_datetime = new Date(start_datetime);
+        end_datetime = new Date(end_datetime);
+        this.booking_id = booking_id;
+        this.room = room_number == 0 ? type : type + "_" + room_number;
+        this.start_date = formatDate(start_datetime);
+        this.end_date = formatDate(end_datetime);
+        this.start_time = formatTime(start_datetime);
+        this.end_time = formatTime(end_datetime);
+        this.status = status;
+        this.reason = reason;
+        this.action = status === "approved" ? {
+            pay: "/payment?id=" + booking_id
+        } : status === "pending" ? {
+            cancel: cancelBooking(booking_id)
+        } : {
+            show: () => { }
+        };
     }
     static async getHistory(userId) {
-        let bookings = await getBookingsByUserId(userId);
-        let rooms = await getRoomNameByIds(bookings.map(booking => booking.room_id));
-        return new HistoryRepo(bookings, rooms).datas;
+        let db = await getDB();
+        let query = `SELECT booking_id, room_number, room.type, start_datetime, end_datetime, booking.status, reason FROM booking INNER JOIN room ON booking.room_id = room.room_id WHERE user_id = ?;`;
+        let result = await db.select(query, [userId]);
+        return result.map(v => new HistoryRepo(v));
     }
 }
