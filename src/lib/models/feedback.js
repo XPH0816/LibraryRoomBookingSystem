@@ -87,7 +87,7 @@ export async function getFeedbackById(id) {
  */
 export async function replyFeedback(id, admin_id, comment) {
     let db = await getDB();
-    let query = `UPDATE feedback SET comment = ?, admin_id = ?, status = "in_progress" WHERE feedback_id = ?`;
+    let query = `UPDATE feedback SET comment = ?, admin_id = ?, status = "closed" WHERE feedback_id = ?`;
     let result = await db.execute(query, [comment, admin_id, id]);
     return result.rowsAffected === 1;
 }

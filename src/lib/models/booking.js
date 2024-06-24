@@ -110,11 +110,11 @@ export function rejectBooking(booking_id, admin_id) {
     }
 }
 
-export function cancelBooking(booking_id, admin_id) {
+export function cancelBooking(booking_id) {
     return async () => {
         let db = await getDB();
-        let query = `UPDATE booking SET status = 'canceled', admin_id = ? WHERE booking_id = ?`;
-        let result = await db.execute(query, [admin_id, booking_id]);
+        let query = `UPDATE booking SET status = 'canceled' WHERE booking_id = ?`;
+        let result = await db.execute(query, [booking_id]);
         return result.rowsAffected === 1;
     }
 }
