@@ -23,10 +23,11 @@ export class BookingManageRepo {
         this.user = username;
         this.room = room_number == 0 ? type : type + "_" + room_number;
         this.date = formatDate(start_datetime) == formatDate(end_datetime) ? formatDate(start_datetime) : `${formatDate(start_datetime)} - ${formatDate(end_datetime)}`;
+        this.time = formatTime(start_datetime) == "08:00" && formatTime(end_datetime) == "22:00" ? "All Day" : `${formatTime(start_datetime)} - ${formatTime(end_datetime)}`;
         this.status = status;
         this.action = status == "pending" ? {
             show: () => { },
-            approve: approveBooking(booking_id, get(cred).id, status),
+            approve: approveBooking(booking_id, get(cred).id, isFreeRoom(type) ? "completed" : "approved"),
             reject: rejectBooking(booking_id, get(cred).id)
         } : {
             show: () => { }
