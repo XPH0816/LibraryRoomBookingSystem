@@ -3,6 +3,7 @@
 
 mod models;
 
+use envcrypt::envc;
 use jsonwebtoken::{
     decode, encode, get_current_timestamp, Algorithm, DecodingKey, EncodingKey, Header, Validation,
 };
@@ -60,10 +61,15 @@ fn get_env(key: &str) -> Result<String, String> {
     }
 }
 
+#[tauri::command]
+fn get_db_url() -> Result<String, String> {
+    Ok(envc!("DATABASE_URL").to_string())
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_sql::Builder::default().build())
-        .invoke_handler(tauri::generate_handler![login, get_env, check_auth])
+        .invoke_handler(tauri::generate_handler![login, get_env, check_auth, get_db_url])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

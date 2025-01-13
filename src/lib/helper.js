@@ -179,3 +179,36 @@ export function isNoRoomNumber(roomName) {
     }
     return false;
 }
+
+/**
+ * @param {String} key
+ * @param {String} value
+ * @param {Number} maxAge
+ */
+export function setItem(key, value, maxAge = 30 * 30 * 60) {
+    maxAge = maxAge * 1000;
+    let result = {
+        data: value
+    }
+
+    if (maxAge) {
+        result.expireTime = maxAge;
+    }
+    window.localStorage.setItem(key, JSON.stringify(result));
+}
+
+/**
+ * @param {String} key
+ * @returns
+ */
+export function getItem(key) {
+    let result = JSON.parse(window.localStorage.getItem(key));
+    if (result) {
+        if (result.expireTime <= Date.now()) {
+            window.localStorage.removeItem(key);
+            return null;
+        }
+        return result.data;
+    }
+    return null;
+}

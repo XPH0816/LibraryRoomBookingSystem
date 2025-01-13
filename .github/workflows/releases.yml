@@ -23,6 +23,9 @@ jobs:
             args: ''
 
     runs-on: ${{ matrix.settings.platform }}
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
@@ -71,6 +74,43 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: pnpm install # change this to npm or pnpm depending on which one you use.
 
+      - name: replace .env file (linux only)  
+        if: matrix.settings.platform == 'ubuntu-22.04'
+        run: |
+          if [[ -n "${{ secrets.DB_USER }}" ]] && [[ -n "${{ secrets.DB_PASSWORD }}" ]]; then
+            sed -i 's/DATABASE_URL=mysql:\/\/root:@127.0.0.1:3306\/libraryroom/DATABASE_URL=mysql:\/\/${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@127.0.0.1:3306\/libraryroom/g' "src-tauri/.env"
+          elif [[ -n "${{ secrets.DB_USER }}" ]]; then
+            sed -i 's/DATABASE_URL=mysql:\/\/root:@127.0.0.1:3306\/libraryroom/DATABASE_URL=mysql:\/\/${{ secrets.DB_USER }}:@127.0.0.1:3306\/libraryroom/g' "src-tauri/.env"
+          elif [[ -n "${{ secrets.DB_PASSWORD }}" ]]; then
+            sed -i 's/DATABASE_URL=mysql:\/\/root:@127.0.0.1:3306\/libraryroom/DATABASE_URL=mysql:\/\/root:${{ secrets.DB_PASSWORD }}@127.0.0.1:3306\/libraryroom/g' "src-tauri/.env"
+          fi
+
+      - name: replace .env file (macos only)  
+        if: matrix.settings.platform != 'ubuntu-22.04' && matrix.settings.platform != 'windows-latest'
+        run: |
+          if [[ -n "${{ secrets.DB_USER }}" ]] && [[ -n "${{ secrets.DB_PASSWORD }}" ]]; then
+            sed 's/DATABASE_URL=mysql:\/\/root:@127.0.0.1:3306\/libraryroom/DATABASE_URL=mysql:\/\/${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@127.0.0.1:3306\/libraryroom/g' "src-tauri/.env"
+          elif [[ -n "${{ secrets.DB_USER }}" ]]; then
+            sed 's/DATABASE_URL=mysql:\/\/root:@127.0.0.1:3306\/libraryroom/DATABASE_URL=mysql:\/\/${{ secrets.DB_USER }}:@127.0.0.1:3306\/libraryroom/g' "src-tauri/.env"
+          elif [[ -n "${{ secrets.DB_PASSWORD }}" ]]; then
+            sed 's/DATABASE_URL=mysql:\/\/root:@127.0.0.1:3306\/libraryroom/DATABASE_URL=mysql:\/\/root:${{ secrets.DB_PASSWORD }}@127.0.0.1:3306\/libraryroom/g' "src-tauri/.env"
+          fi
+
+      - name: replace .env file (windows only)
+        if: matrix.settings.platform == 'windows-latest'
+        run: |
+          $envContent = Get-Content src-tauri/.env
+          if ($env:DB_USER) {
+            if ($env:DB_PASSWORD) {
+              $envContent = $envContent -replace 'DATABASE_URL=mysql://root:@127.0.0.1:3306/libraryroom', "DATABASE_URL=mysql://$env:DB_USER:$env:DB_PASSWORD@127.0.0.1:3306/libraryroom"
+            } else {
+              $envContent = $envContent -replace 'DATABASE_URL=mysql://root:@127.0.0.1:3306/libraryroom', "DATABASE_URL=mysql://$env:DB_USER:@127.0.0.1:3306/libraryroom"
+            }
+          } elseif ($env:DB_PASSWORD) {
+            $envContent = $envContent -replace 'DATABASE_URL=mysql://root:@127.0.0.1:3306/libraryroom', "DATABASE_URL=mysql://root:$env:DB_PASSWORD@127.0.0.1:3306/libraryroom"
+          }
+          $envContent | Set-Content src-tauri/.env
+          
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

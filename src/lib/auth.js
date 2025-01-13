@@ -1,9 +1,9 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { goto } from "$app/navigation";
 import { hashPassword, verify } from "./crypto/hashing";
-import Cookies from "js-cookie";
 import { getDB } from "./db";
 import { getUserByEmail } from "./models/user";
+import { setItem } from "./helper";
 
 export async function login(email, password, usertype, link) {
     let user = await getUserByEmail(email, usertype);
@@ -17,9 +17,8 @@ export async function login(email, password, usertype, link) {
     let token = await invoke("login", {
         user,
     });
-
-    let expiredDate = new Date(token.exp * 1000);
-    Cookies.set("token", token.token, { expires: expiredDate });
+    console.log(token);
+    setItem("token", token.token, token.exp);
     goto(link);
 };
 

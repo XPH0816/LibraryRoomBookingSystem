@@ -1,6 +1,6 @@
 [package]
 name = "LibraryRoomBookingSystem"
-version = "1.0.5"
+version = "1.0.6"
 description = "A Library Room Booking System built with Tauri and Rust"
 authors = ["Lim Shi Song limshisong123@gmail.com"]
 edition = "2021"
@@ -9,6 +9,7 @@ edition = "2021"
 
 [build-dependencies]
 tauri-build = { version = "1", features = [] }
+dotenvy = "0.15.7"
 
 [dependencies]
 tauri = { version = "1", features = ["shell-open"] }
@@ -17,6 +18,7 @@ jsonwebtoken = "9"
 serde_json = "1"
 dotenvy = "0.15.7"
 chrono = "0.4.38"
+envcrypt = "0.5.0"
 
 [dependencies.tauri-plugin-sql]
 git = "https://github.com/tauri-apps/plugins-workspace"
