@@ -1,6 +1,6 @@
 [package]
 name = "LibraryRoomBookingSystem"
-version = "1.0.6"
+version = "1.0.7"
 description = "A Library Room Booking System built with Tauri and Rust"
 authors = ["Lim Shi Song limshisong123@gmail.com"]
 edition = "2021"

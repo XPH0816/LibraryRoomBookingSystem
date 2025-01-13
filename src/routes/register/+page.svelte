@@ -14,8 +14,10 @@
         try {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             const phoneRegex = /^010-[0-9]{8}$|^01[1-9]-[0-9]{7}$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
             if (!emailRegex.test(email)) throw new Error("Invalid email address.");
             if (!phoneRegex.test(phone)) throw new Error("Invalid phone number format (010-xxxxxxxx) or (01x-xxxxxxx).");
+            if (!passwordRegex.test(password)) throw new Error("Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character.");
             await register(email, password, phone, usertype);
             goto("/");
         } catch (err) {
