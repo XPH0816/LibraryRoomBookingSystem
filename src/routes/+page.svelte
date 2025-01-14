@@ -1,7 +1,7 @@
 <script>
   import LoginForm from "$lib/components/forms/LoginForm.svelte";
-
   import { login } from "$lib/auth";
+    import { logUserActivity } from "$lib/helper";
 
   let email = "";
   let password = "";
@@ -14,6 +14,7 @@
       invalid = false;
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) throw new Error("Invalid email address.");
+      logUserActivity(`Logged in as ${email}`, email);
       await login(email, password, usertype, "/home");
     } catch (err) {
       invalid = true;

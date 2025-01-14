@@ -17,7 +17,6 @@ export async function login(email, password, usertype, link) {
     let token = await invoke("login", {
         user,
     });
-    console.log(token);
     setItem("token", token.token, token.exp);
     goto(link);
 };

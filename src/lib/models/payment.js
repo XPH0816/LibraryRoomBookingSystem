@@ -32,7 +32,7 @@ export class Payment {
 
 export async function getPaymentMethods() {
     let db = await getDB();
-    let result = await db.select(`SHOW COLUMNS FROM payment WHERE Field = 'method'`);
+    let result = await db.select("SELECT CAST(COLUMN_TYPE AS CHAR) AS Type FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'payment' AND COLUMN_NAME = 'method';")
     return result[0].Type.match(/'([^']+)'/g).map((v) => v.slice(1, -1));
 }
 

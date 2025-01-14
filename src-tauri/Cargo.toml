@@ -14,11 +14,16 @@ dotenvy = "0.15.7"
 [dependencies]
 tauri = { version = "1", features = ["shell-open"] }
 serde = { version = "1", features = ["derive"] }
+log = "^0.4"
 jsonwebtoken = "9"
 serde_json = "1"
 dotenvy = "0.15.7"
 chrono = "0.4.38"
 envcrypt = "0.5.0"
+
+[dependencies.tauri-plugin-log]
+git = "https://github.com/tauri-apps/plugins-workspace"
+branch = "v1"
 
 [dependencies.tauri-plugin-sql]
 git = "https://github.com/tauri-apps/plugins-workspace"

@@ -5,6 +5,7 @@
     import { updateUserById } from "$lib/models/user.js";
     import { updatePassword, verifyOldPassword } from "$lib/auth";
     import showModal from "$lib/showModal";
+    import { logUserActivity } from "$lib/helper";
 
     let currentPassword = "";
     let password = "";
@@ -31,6 +32,7 @@
             $user.email = email;
             $user.phone = phone;
             updateSuccess = true;
+            logUserActivity(`Updated profile`, $user.email);
         } catch (error) {
             console.error(error);
             if (!error.message) showModal("Error", "An error occurred. Please try again later.");
@@ -46,6 +48,7 @@
 
             await updatePassword(password, usertype, $user.id);
             changeSuccess = true;
+            logUserActivity(`Changed password`, $user.email);
         } catch (error) {
             if (error.message && error.message === "Invalid password")
                 invalid = true;

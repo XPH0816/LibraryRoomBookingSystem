@@ -1,4 +1,5 @@
 import { getRoomType } from "./store";
+import { info } from "tauri-plugin-log-api";
 
 /**
  * 
@@ -211,4 +212,12 @@ export function getItem(key) {
         return result.data;
     }
     return null;
+}
+
+/**
+ * @param {String} string
+ * @param {String} email
+ */
+export function logUserActivity(string, email) {
+    info(`${email} - ${string}`);
 }

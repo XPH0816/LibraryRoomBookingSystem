@@ -1,7 +1,7 @@
 <script>
     import { goto } from "$app/navigation";
     import FeedBackForm from "$lib/components/forms/FeedBackForm.svelte";
-    import { formatDate } from "$lib/helper.js";
+    import { formatDate, logUserActivity } from "$lib/helper.js";
     import { closeFeedback } from "$lib/models/feedback.js";
     import { user } from "$lib/store.js";
     import { Row } from "@sveltestrap/sveltestrap";
@@ -48,6 +48,7 @@
                 if (await data.feedback.update()) {
                     success = true;
                     await closeFeedback(data.feedback.id);
+                    logUserActivity(`Replied to feedback ID: ${data.feedback.id}`, $user.email);
                     goto("/manage/feedback");
                 } else throw new Error("Failed to Submit Feedback");
             } catch (e) {

@@ -2,6 +2,7 @@
     import { goto } from "$app/navigation";
     import { register } from "$lib/auth";
     import RegisterForm from "$lib/components/forms/RegisterForm.svelte";
+    import { logUserActivity } from "$lib/helper";
     import showModal from "$lib/showModal";
 
     let email = "";
@@ -19,6 +20,7 @@
             if (!phoneRegex.test(phone)) throw new Error("Invalid phone number format (010-xxxxxxxx) or (01x-xxxxxxx).");
             if (!passwordRegex.test(password)) throw new Error("Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character.");
             await register(email, password, phone, usertype);
+            logUserActivity(`Registered as ${email}`, email);
             goto("/");
         } catch (err) {
             if (!err.message) showModal("Error", "An error occurred. Please try again later.");

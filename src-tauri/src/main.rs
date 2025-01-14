@@ -8,6 +8,7 @@ use jsonwebtoken::{
     decode, encode, get_current_timestamp, Algorithm, DecodingKey, EncodingKey, Header, Validation,
 };
 use models::{User, UserForm, UserToken};
+use tauri_plugin_log::LogTarget;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -69,6 +70,11 @@ fn get_db_url() -> Result<String, String> {
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_sql::Builder::default().build())
+        .plugin(tauri_plugin_log::Builder::default().targets([
+            LogTarget::LogDir,
+            LogTarget::Stdout,
+            LogTarget::Webview,
+        ]).level(log::LevelFilter::Info).build())
         .invoke_handler(tauri::generate_handler![login, get_env, check_auth, get_db_url])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

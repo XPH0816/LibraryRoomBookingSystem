@@ -1,6 +1,8 @@
 <script>
     import TableCard from "$lib/components/TableCard.svelte";
+    import { logUserActivity } from "$lib/helper";
     import { RoomManageRepo } from "$lib/repos/roomManageRepo";
+    import { user } from "$lib/store";
     import {
         Card,
         CardTitle,
@@ -18,6 +20,7 @@
     let deleteSuccess = false;
     let deleteFunction = (event) => {
         deleteSuccess = true;
+        logUserActivity(`Deleted room ID: ${event.detail.room_id}`, $user.email);
         rooms = rooms.filter((r) => r.room_id !== event.detail.room_id);
     };
 

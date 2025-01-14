@@ -4,6 +4,7 @@
         formatDate,
         formatTime,
         getMaxTime,
+        logUserActivity,
         toDateTime,
     } from "$lib/helper";
     import { Booking, checkAvailability } from "$lib/models/booking";
@@ -53,6 +54,7 @@
             });
             if (await booking.save()) success = true;
             else throw new Error("Booking failed");
+            logUserActivity(`Booked room ID: ${roomId}`, $user.email);
         } catch (error) {
             if (error.message) showModal("Error", error.message);
             else showModal("Error", "Failed to book room");

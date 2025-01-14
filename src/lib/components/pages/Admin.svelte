@@ -17,7 +17,9 @@
         formatDate,
         formatTime,
         isFreeRoom,
+        logUserActivity,
     } from "$lib/helper";
+    import { user as auth } from "$lib/store";
     import { getBillByPaymentId } from "$lib/models/bill";
     import { getPaymentByBookingId } from "$lib/models/payment";
     import showModal from "$lib/showModal";
@@ -58,6 +60,7 @@
 
     let approve = (event) => {
         showModal("Success", "Booking approved successfully");
+        logUserActivity(`Approved booking ID: ${event.detail.no}`, $auth.email);
         let booking = list.find((b) => b.no === event.detail.no);
         booking.status = isFreeRoom(event.detail.room) ? "completed" : "approved";
         booking.action = {
@@ -70,6 +73,7 @@
 
     let reject = (event) => {
         showModal("Success", "Booking rejected successfully");
+        logUserActivity(`Rejected booking ID: ${event.detail.no}`, $auth.email);
         let booking = list.find((b) => b.no === event.detail.no);
         booking.status = "rejected";
         booking.action = {

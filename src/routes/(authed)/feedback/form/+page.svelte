@@ -1,5 +1,7 @@
 <script>
     import FeedBackForm from "$lib/components/forms/FeedBackForm.svelte";
+    import { logUserActivity } from "$lib/helper.js";
+    import { user } from "$lib/store.js";
     import { Row } from "@sveltestrap/sveltestrap";
     import { onMount } from "svelte";
 
@@ -22,6 +24,7 @@
                 data.feedback.content = content;
                 if (await data.feedback.update()) success = true;
                 else throw new Error("Failed to Submit Feedback");
+                logUserActivity("Updated Feedback ID: " + data.feedback.id, $user.email);
             } catch (e) {
                 failure = true;
                 if(e.message) msg = e.message;

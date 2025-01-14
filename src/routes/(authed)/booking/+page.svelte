@@ -1,6 +1,6 @@
 <script>
     import BookingForm from "$lib/components/forms/BookingForm.svelte";
-    import { formatDate, getMaxTime, toDateTime } from "$lib/helper";
+    import { formatDate, getMaxTime, logUserActivity, toDateTime } from "$lib/helper";
     import { Booking, checkAvailability } from "$lib/models/booking";
     import showModal from "$lib/showModal";
     import { currentDateTime, user } from "$lib/store";
@@ -46,6 +46,7 @@
             });
             if (await booking.save()) success = true;
             else throw new Error("Booking failed");
+            logUserActivity(`Booked room ID: ${roomId}`, $user.email);
         } catch (e) {
             console.error(e);
             if (e.message) showModal("Failed", e.message);

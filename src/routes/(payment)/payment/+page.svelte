@@ -1,9 +1,10 @@
 <script>
     import { goto } from "$app/navigation";
     import Form from "$lib/components/Form.svelte";
-    import { SnakeCaseToCapitalized } from "$lib/helper.js";
+    import { logUserActivity, SnakeCaseToCapitalized } from "$lib/helper.js";
     import { Bill } from "$lib/models/bill";
     import { Payment, getPaymentMethods } from "$lib/models/payment";
+    import { user } from "$lib/store.js";
     import { Button, FormGroup, Input } from "@sveltestrap/sveltestrap";
     import { onMount } from "svelte";
 
@@ -33,7 +34,7 @@
             });
             data.booking.status = "completed";
             await data.booking.update();
-
+            logUserActivity(`Paid RM ${data.amount} for booking ID: ${data.booking.booking_id}`, $user.email);
             goto("/history");
         } catch (e) {
             console.error(e);

@@ -1,6 +1,8 @@
 <script>
     import RoomForm from "$lib/components/forms/RoomForm.svelte";
+    import { logUserActivity } from "$lib/helper.js";
     import { Room } from "$lib/models/room.js";
+    import { user } from "$lib/store.js";
 
     export let data;
 
@@ -41,6 +43,7 @@
                 data.room.status = status;
                 await data.room.update();
                 success = true;
+                logUserActivity(`Updated room ID: ${data.room.room_number}`, $user.email);
             } catch (err) {
                 if (err.message) error = err.message;
                 else if (err.includes("duplicate") || err.includes("Duplicate")) error = "Room already exist";
