@@ -214,6 +214,10 @@ export function getItem(key) {
     return null;
 }
 
+export function removeItem(key) {
+    window.localStorage.removeItem(key);
+}
+
 /**
  * @param {String} string
  * @param {String} email

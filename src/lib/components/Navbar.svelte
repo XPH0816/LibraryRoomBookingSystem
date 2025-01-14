@@ -1,6 +1,5 @@
 <script>
     import { theme } from "$lib/store.js";
-    import Cookies from "js-cookie";
     import {
         Nav,
         Navbar,
@@ -17,12 +16,13 @@
     } from "@sveltestrap/sveltestrap";
     import { user } from "$lib/store.js";
     import { goto } from "$app/navigation";
+    import { removeItem } from "$lib/helper";
 
     let isOpen = false;
     export let size = "md";
 
     function logout() {
-        Cookies.remove("token");
+        removeItem("token");
         goto("/");
     }
 

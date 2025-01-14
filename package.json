@@ -1,7 +1,7 @@
 {
   "name": "libraryroombookingsystem",
   "private": true,
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,6 @@
     "@sveltestrap/sveltestrap": "^6.2.7",
     "@tauri-apps/api": "^1.6.0",
     "bcryptjs": "^2.4.3",
-    "js-cookie": "^3.0.5",
     "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1",
     "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql#v1"
   },

@@ -2,7 +2,7 @@
 	import { page } from "$app/stores";
 	import { emoji } from "$lib/emoji.js";
 	import { Button } from "@sveltestrap/sveltestrap";
-	import Cookies from "js-cookie";
+	import { getItem } from "$lib/helper";
 </script>
 
 <main class="gap-2">
@@ -14,7 +14,7 @@
 		{$page.error.message}
 	</h2>
 	<p>Sorry, something went wrong.</p>
-	{#if Cookies.get("token")}
+	{#if getItem("token")}
 		<Button href="/home">Back to Home</Button>
 	{:else}
 		<Button href="/">Back to Login</Button>
